@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pl">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Formularz</title>
+    </head>
+    <body>
+        <h2>Wysyłanie formularza do Express.js</h2>
+    
+        <form id="myForm">
+            <label for="name">Imię:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="age">Wiek:</label>
+            <input type="number" id="age" name="age" required>
+            
+            <button type="submit">Wyślij</button>
+        </form>
+
+        <script>
+            document.getElementById("myForm").addEventListener("submit", async function(event) {
+                event.preventDefault(); // Zapobiega odświeżeniu strony
+    
+                // Pobieranie danych z formularza
+                const name = document.getElementById("name").value;
+                const age = document.getElementById("age").value;
+    
+                // Tworzenie obiektu z danymi
+                const formData = { name, age };
+    
+                try {
+                    const response = await fetch("http://localhost:3000/api/data", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(formData)
+                    });
+    
+                    const data = await response.json(); //odczytujemy odpowiedź z serwera 
+                    console.log("Odpowiedź serwera:", data); //w konsoli pojawi się odpowiedź z serwera
+                    alert("Dane wysłane pomyślnie!");
+                } catch (error) {
+                    console.error("Błąd:", error);
+                }
+            });
+        </script>
+
+    </body>
+</html>
